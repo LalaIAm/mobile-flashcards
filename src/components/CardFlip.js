@@ -1,7 +1,7 @@
-import React from "react";
-import { TouchableOpacity, StyleSheet, View, Text } from "react-native";
-import CardFlip from "react-native-card-flip";
-import { Card, Button } from "react-native-paper";
+import React from 'react';
+import { TouchableOpacity, StyleSheet, View, Text } from 'react-native';
+import CardFlip from 'react-native-card-flip';
+import { Card, Button } from 'react-native-paper';
 
 class FlipCard extends React.Component {
   handleCorrect = () => {
@@ -18,8 +18,8 @@ class FlipCard extends React.Component {
     const answer = this.props.question.answer;
 
     return (
-      <Card>
-        <View style={styles.container}>
+      <Card style={styles.cardOuterContainer}>
+        <View style={styles.cardContainer}>
           <CardFlip
             style={styles.cardContainer}
             ref={(card) => (this.card = card)}
@@ -35,13 +35,27 @@ class FlipCard extends React.Component {
               activeOpacity={1}
               style={[styles.card, styles.card2]}
             >
-              <Text style={styles.label}>{answer}</Text>
+              <View>
+                <Text style={styles.label}>{answer}</Text>
+                <View style={styles.btnBox}>
+                  <Button
+                    mode="contained"
+                    style={styles.btnCorrect}
+                    onPress={this.handleCorrect}
+                  >
+                    Correct!
+                  </Button>
+                  <Button
+                    mode="contained"
+                    style={styles.btn}
+                    onPress={this.handleNextQuestion}
+                  >
+                    Incorrect
+                  </Button>
+                </View>
+              </View>
             </TouchableOpacity>
           </CardFlip>
-        </View>
-        <View>
-          <Button onPress={this.handleCorrect}>Correct</Button>
-          <Button onPress={this.handleNextQuestion}>Incorrect</Button>
         </View>
       </Card>
     );
@@ -51,12 +65,17 @@ class FlipCard extends React.Component {
 export default FlipCard;
 
 const styles = StyleSheet.create({
+  cardOuterContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20
+  },
   cardContainer: {
     width: 300,
-    height: 400,
-    backgroundColor: "#fe474c",
+    height: 450,
+    backgroundColor: 'transparent',
     borderRadius: 5,
-    shadowColor: "rgba(0,0,0,0.5)",
+    shadowColor: 'rgba(0,0,0,0.5)',
     shadowOffset: {
       width: 0,
       height: 1,
@@ -64,15 +83,31 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
   },
   card1: {
-    backgroundColor: "#fe474c",
+    backgroundColor: '#7AA6AC',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   card2: {
-    backgroundColor: "#feb12c",
+    backgroundColor: '#DFDEE5',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   label: {
-    lineHeight: 470,
-    textAlign: "center",
-    fontSize: 55,
-    backgroundColor: "transparent",
+    textAlign: 'center',
+    fontSize: 24,
+    backgroundColor: 'transparent',
   },
+  btnBox: {
+    marginTop: 40
+  },
+  btnCorrect: {
+    padding: 5,
+    marginVertical: 10
+  },
+  btn: {
+    padding: 5,
+    backgroundColor: '#CC7566'
+  }
 });

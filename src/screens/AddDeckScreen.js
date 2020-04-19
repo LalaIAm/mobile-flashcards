@@ -1,42 +1,58 @@
-import React, { useState } from "react";
-import { View, Text } from "react-native";
-import { Title, Surface, TextInput, Button } from "react-native-paper";
-import { connect } from "react-redux";
-import { saveDeck } from "../actions/decks";
+import React, { useState } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { Title, Surface, TextInput, Button } from 'react-native-paper';
+import { connect } from 'react-redux';
+import { saveDeck, selectDeck } from '../actions/decks';
+import { gStyles } from '../config/theme';
 
 const AddDeckScreen = (props) => {
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState('');
 
-  const { saveDeck, navigation } = props;
+  const { saveDeck, navigation, selectDeck } = props;
 
   const handleSaveDeck = () => {
     saveDeck(title);
-    navigation.push("Deck", { deckId: title });
+    selectDeck(title)
+    navigation.push('Deck', { deckId: title });
   };
 
   return (
-    <View>
-      <Surface>
-        <Title>Create A Deck</Title>
+    <View style={gStyles.container}>
+      <Surface style={gStyles.surface}>
+        <Title style={gStyles.title}>Create A Deck</Title>
         <TextInput
+          style={styles.input}
           value={title}
           onChangeText={(text) => setTitle(text)}
-          label='Deck Title'
+          label="Deck Title"
         />
-        <Button onPress={handleSaveDeck}>Save</Button>
+        <Button style={styles.btn} mode="contained" onPress={handleSaveDeck}>
+          Save
+        </Button>
       </Surface>
     </View>
   );
 };
 
-const mapStateToProps = (state) => {
-  return {};
-};
+
+
 
 const mapDispatchToProps = (dispatch) => {
   return {
     saveDeck: (title) => dispatch(saveDeck(title)),
+    selectDeck: (deck) => dispatch(selectDeck(deck))
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddDeckScreen);
+export default connect(null, mapDispatchToProps)(AddDeckScreen);
+
+const styles = StyleSheet.create({
+  input: {
+    marginTop: 20,
+    backgroundColor: 'white'
+  },
+  btn: {
+    padding: 5,
+    marginTop: 15
+  }
+});

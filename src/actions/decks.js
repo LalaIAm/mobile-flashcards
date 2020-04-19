@@ -1,10 +1,18 @@
-import * as API from "../utils/api";
+import * as API from '../utils/api';
 
-export const GET_DECKS = "GET_DECKS";
-export const SAVE_DECK = "SAVE_DECK";
-export const DELETE_DECK = "DELETE_DECK";
-export const SAVE_CARD = "SAVE_CARD";
-export const CLEAR_DECKS = "CLEAR_DECKS";
+export const GET_DECKS = 'GET_DECKS';
+export const SAVE_DECK = 'SAVE_DECK';
+export const DELETE_DECK = 'DELETE_DECK';
+export const SAVE_CARD = 'SAVE_CARD';
+export const CLEAR_DECKS = 'CLEAR_DECKS';
+export const SELECT_DECK = 'SELECT_DECK';
+
+export const selectDeck = (deck) => {
+  return {
+    type: SELECT_DECK,
+    deck,
+  };
+};
 
 const getDecksSuccess = (decks) => {
   return {
@@ -32,22 +40,23 @@ export const saveDeck = (title) => {
   return (dispatch) => {
     return API.saveDeck(title).then((deck) => {
       dispatch(saveDeckSuccess(deck));
+      dispatch(selectDeck(deck));
     });
   };
 };
 
-const deleteDeckSuccess = (decks) => {
+const deleteDeckSuccess = (title) => {
   return {
     type: DELETE_DECK,
-    decks,
+    title,
   };
 };
 
 export const deleteDeck = (title) => {
   return (dispatch) => {
-    return API.deleteDeck(title).then((decks) =>
-      dispatch(deleteDeckSuccess(decks))
-    );
+    return API.deleteDeck(title).then(() => {
+      dispatch(deleteDeckSuccess(title));
+    });
   };
 };
 

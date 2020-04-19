@@ -44,12 +44,15 @@ export const saveDeck = async (title) => {
 
 export const deleteDeck = async (title) => {
   try {
-    let savedDecks = await AsyncStorage.getItem(DECK_KEY);
-    savedDecks = JSON.parse(savedDecks);
-    savedDecks.title = undefined;
-    delete savedDecks.title;
-    await AsyncStorage.setItem(DECK_KEY, JSON.stringify(savedDecks));
-    return savedDecks;
+    const data = await AsyncStorage.getItem(DECK_KEY)
+    const savedDecks = JSON.parse(data);
+    const updatedDecks = Object.keys(savedDecks).reduceRight((newObj, key) => {
+      if (key !== title){
+        newObj[key] = data[key];
+      }
+      return newObj;
+    }, {});
+    await AsyncStorage.setItem(DECK_KEY, JSON.stringify(updatedDecks))
   } catch (e) {
     console.log(e);
   }

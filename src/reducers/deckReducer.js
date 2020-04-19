@@ -4,7 +4,7 @@ import {
   GET_DECKS,
   DELETE_DECK,
   CLEAR_DECKS,
-} from "../actions/decks";
+} from '../actions/decks';
 
 const initialState = {};
 
@@ -28,10 +28,15 @@ const decks = (state = initialState, action) => {
         [updatedDeck.title]: updatedDeck,
       };
     case DELETE_DECK:
-      return {
-        ...state,
-        ...action.decks,
-      };
+      return Object.keys(state).reduce((newState, key) => {
+        if (key !== action.title) {
+          return {
+            ...newState,
+            [key]: state[key],
+          };
+        }
+        return newState;
+      }, {});
     case CLEAR_DECKS:
       return {
         initalState,
