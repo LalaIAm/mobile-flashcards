@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import FlipCard from '../components/CardFlip';
-import { connect } from 'react-redux';
-import { Surface, Title, Text, FAB, Button } from 'react-native-paper';
+import { Surface, Title, Text, Button } from 'react-native-paper';
 import { gStyles } from '../config/theme';
+import { clearNotification } from '../utils/notifications';
 
 const ReviewScreen = (props) => {
   const [index, setIndex] = useState(0);
@@ -26,11 +26,18 @@ const ReviewScreen = (props) => {
 
   const endReview = () => {
     setIndex(0);
+    setCorrect( 0 );
+    clearNotification()
     navigation.navigate('Home');
   };
 
   const getPercent = () => {
-    return (correct / totalQuestions) * 100;
+    return Math.round((correct / totalQuestions) * 100);
+  };
+
+  const restartQuiz = () => {
+    setIndex(0);
+    setCorrect(0);
   };
 
   if (totalQuestions === index) {
@@ -39,6 +46,13 @@ const ReviewScreen = (props) => {
         <Surface style={gStyles.surface}>
           <Text style={styles.endReview}>Great!. You got {correct} right!</Text>
           <Text style={styles.percent}>That's {getPercent()}%!</Text>
+          <Button
+            mode="contained"
+            style={styles.restartBtn}
+            onPress={restartQuiz}
+          >
+            Restart Quiz
+          </Button>
           <Button mode="contained" style={styles.endBtn} onPress={endReview}>
             End Review
           </Button>
@@ -67,15 +81,15 @@ const styles = StyleSheet.create({
   endReview: {
     textAlign: 'center',
     lineHeight: 50,
-    fontSize: 22
+    fontSize: 22,
   },
   percent: {
     textAlign: 'center',
     fontSize: 30,
     color: '#e38271',
-    marginBottom: 20
+    marginBottom: 20,
   },
   endBtn: {
-    padding: 5
-  }
+    padding: 5,
+  },
 });

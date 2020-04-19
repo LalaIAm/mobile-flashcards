@@ -75,14 +75,17 @@ export const saveCard = (card, title) => {
   };
 };
 
-const resetDecksSuccess = () => {
+const resetDecksSuccess = (decks) => {
   return {
     type: CLEAR_DECKS,
+    decks,
   };
 };
 
 export const resetDecks = () => {
   return (dispatch) => {
-    return API.resetDecks().then(() => dispatch(resetDecksSuccess()));
+    return API.resetDecks().then((decks) => {
+      dispatch(resetDecksSuccess(decks));
+    });
   };
 };

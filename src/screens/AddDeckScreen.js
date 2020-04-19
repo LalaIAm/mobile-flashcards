@@ -12,7 +12,8 @@ const AddDeckScreen = (props) => {
 
   const handleSaveDeck = () => {
     saveDeck(title);
-    selectDeck(title)
+    selectDeck( title )
+    setTitle('')
     navigation.push('Deck', { deckId: title });
   };
 

@@ -1,7 +1,7 @@
-import { AsyncStorage } from "react-native";
-import { initialDecks } from "./mockData";
+import { AsyncStorage } from 'react-native';
+import { initialDecks } from './mockData';
 
-export const DECK_KEY = "@Flasher_Deck";
+export const DECK_KEY = '@Flasher_Deck';
 
 const formatDeck = (title) => {
   return {
@@ -10,19 +10,27 @@ const formatDeck = (title) => {
   };
 };
 
+export const setInitialData = async () => {
+  try {
+    await AsyncStorage.setItem(DECK_KEY, JSON.stringify(initialDecks));
+    return initialDecks;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 export const getDecks = async () => {
   try {
     let data = await AsyncStorage.getItem(DECK_KEY);
-    let storedDecks = JSON.parse(data);
-    if (!storedDecks) {
-      storedDecks = initialDecks;
-      await AsyncStorage.setItem(DECK_KEY, JSON.stringify(storedDecks));
-      return storedDecks;
+    if (!data) {
+      let decks = await setInitialData();
+      return decks;
     } else {
-      return storedDecks;
+      let decks=JSON.parse( data );
+      return decks;
     }
   } catch (e) {
-    console.log("Storage Read Error: ", e);
+    console.log('Storage Read Error: ', e);
   }
 };
 
@@ -38,37 +46,37 @@ export const saveDeck = async (title) => {
     await AsyncStorage.setItem(DECK_KEY, JSON.stringify(updatedDecks));
     return formattedDeck;
   } catch (e) {
-    console.log("Save Error: ", e);
+    console.log('Save Error: ', e);
   }
 };
 
 export const deleteDeck = async (title) => {
   try {
-    const data = await AsyncStorage.getItem(DECK_KEY)
+    const data = await AsyncStorage.getItem(DECK_KEY);
     const savedDecks = JSON.parse(data);
     const updatedDecks = Object.keys(savedDecks).reduceRight((newObj, key) => {
-      if (key !== title){
+      if (key !== title) {
         newObj[key] = data[key];
       }
       return newObj;
     }, {});
-    await AsyncStorage.setItem(DECK_KEY, JSON.stringify(updatedDecks))
+    await AsyncStorage.setItem(DECK_KEY, JSON.stringify(updatedDecks));
   } catch (e) {
     console.log(e);
   }
 };
 
-export const saveCard = async (card, deckTitle) => {
+export const saveCard = async (card, title) => {
   try {
-    let data = await AsyncStorage.getItem(DECK_KEY);
+    const data = await AsyncStorage.getItem(DECK_KEY);
     const decks = JSON.parse(data);
     const updatedDeck = {
-      ...decks[deckTitle],
-      questions: [...decks[deckTitle].questions, card],
+      ...decks[title],
+      questions: [...decks[title].questions, card],
     };
     const updatedData = {
       ...decks,
-      [deckTitle]: updatedDeck,
+      [title]: updatedDeck,
     };
     await AsyncStorage.setItem(DECK_KEY, JSON.stringify(updatedData));
     return updatedDeck;
@@ -80,6 +88,8 @@ export const saveCard = async (card, deckTitle) => {
 export const resetDecks = async () => {
   try {
     await AsyncStorage.removeItem(DECK_KEY);
+    await AsyncStorage.setItem(DECK_KEY, JSON.stringify(initialDecks));
+    return initialDecks;
   } catch (e) {
     console.log(e);
   }

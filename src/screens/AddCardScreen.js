@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Card, Title, Button, TextInput } from 'react-native-paper';
-import { saveCard } from '../actions/decks';
+import { saveCard, getDecks } from '../actions/decks';
 import { connect } from 'react-redux';
 import { gStyles } from '../config/theme';
 
 const AddCardScreen = (props) => {
   const [question, setQuestion] = useState('');
   const [answer, setAnswer] = useState('');
-  const { deckId, saveCard, navigation } = props;
+  const { deckId, getDecks, saveCard, navigation } = props;
 
   const handleAddCard = () => {
     let card = {
@@ -21,7 +21,8 @@ const AddCardScreen = (props) => {
     setAnswer('');
   };
 
-  const handleDonePress = () => {
+  const handleDonePress=() => {
+    getDecks()
     navigation.goBack();
   };
 
@@ -61,7 +62,8 @@ const mapStateToProps = ( state, { route }) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    saveCard: (card, deckId) => dispatch(saveCard(card, deckId)),
+    saveCard: ( card, deckId ) => dispatch( saveCard( card, deckId ) ),
+    getDecks: () => dispatch(getDecks())
   };
 };
 

@@ -39,7 +39,11 @@ const decks = (state = initialState, action) => {
         return newState;
       }, {});
     case CLEAR_DECKS:
-      return {};
+      let initialDecks = action.decks;
+      return {
+        ...state,
+        initialDecks,
+      };
     default:
       return state;
   }

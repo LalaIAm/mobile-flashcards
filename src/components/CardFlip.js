@@ -13,6 +13,8 @@ class FlipCard extends React.Component {
     this.props.nextQuestion();
     this.card.flip();
   };
+
+  
   render() {
     const question = this.props.question.question;
     const answer = this.props.question.answer;
@@ -81,6 +83,8 @@ const styles = StyleSheet.create({
       height: 1,
     },
     shadowOpacity: 0.5,
+  }, card: {
+    padding: 15
   },
   card1: {
     backgroundColor: '#7AA6AC',
