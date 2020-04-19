@@ -1,14 +1,24 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { Card, Headline, Subheading } from 'react-native-paper';
+import {
+  Card,
+  Headline,
+  Subheading,
+  ActivityIndicator,
+  Colors,
+} from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { selectDeck } from '../actions/decks';
 import { gStyles } from '../config/theme';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 const DeckCard = (props) => {
   const { deck, selectDeck } = props;
   const navigation = useNavigation();
+
+  if (!deck) {
+    return <ActivityIndicator color={Colors.blue500} size="large" />;
+  }
 
   const getNumCards = () => {
     let n = deck.questions.length;
@@ -19,7 +29,7 @@ const DeckCard = (props) => {
   };
 
   const chooseDeck = () => {
-    selectDeck(deck)
+    selectDeck(deck);
     navigation.push('Deck', { deckId: deck.title });
   };
   return (
@@ -30,11 +40,11 @@ const DeckCard = (props) => {
   );
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    selectDeck: (deck) => dispatch(selectDeck(deck))
-  }
-}
+    selectDeck: (deck) => dispatch(selectDeck(deck)),
+  };
+};
 
 export default connect(null, mapDispatchToProps)(DeckCard);
 
@@ -42,6 +52,6 @@ const styles = StyleSheet.create({
   card: {
     padding: 15,
     marginTop: 20,
-    backgroundColor: 'white'
-  }
+    backgroundColor: 'white',
+  },
 });

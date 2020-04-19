@@ -6,7 +6,8 @@ import {
   CLEAR_DECKS,
 } from '../actions/decks';
 
-const initialState = {};
+import { initialDecks } from '../utils/mockData';
+const initialState = initialDecks;
 
 const decks = (state = initialState, action) => {
   switch (action.type) {
@@ -38,9 +39,7 @@ const decks = (state = initialState, action) => {
         return newState;
       }, {});
     case CLEAR_DECKS:
-      return {
-        initalState,
-      };
+      return {};
     default:
       return state;
   }
