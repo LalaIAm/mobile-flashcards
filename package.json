@@ -1,4 +1,5 @@
-{"name": "card-flasher",
+{
+  "name": "card-flasher",
   "version": "0.0.1",
   "description": "A flashcards app built with React Native",
   "author": "Lauren Thorud",

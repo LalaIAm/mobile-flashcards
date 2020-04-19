@@ -43,6 +43,8 @@ Card Flasher is a mobile app built with react native. It allows the user to crea
 
 Users are able to create new custom decks and add their own cards to suit their needs.
 
+The app has been tested in an android emulator and in an iPhone device. Please refer to the [Contributing](#contributing) section for any fixes or found bugs.
+
 ### Built With
 
 - [React Native](#https://reactnative.dev/)
